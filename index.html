@@ -92,12 +92,12 @@
             flex-shrink: 0;
         }
 
-        .agent-avatar.varun { background: #10b981; }
-        .agent-avatar.maya { background: #ef4444; }
-        .agent-avatar.kavi { background: #8b5cf6; }
-        .agent-avatar.rishi { background: #3b82f6; }
+        .agent-avatar.sterling { background: #10b981; }
+        .agent-avatar.rio { background: #ef4444; }
+        .agent-avatar.phoenix { background: #8b5cf6; }
+        .agent-avatar.cipher { background: #3b82f6; }
         .agent-avatar.orion { background: #06b6d4; }
-        .agent-avatar.zara { background: #f59e0b; }
+        .agent-avatar.juno { background: #f59e0b; }
 
         .agent-info h3 {
             font-size: 16px;
@@ -115,9 +115,7 @@
             margin-top: 2px;
         }
 
-        .agent-info .status.online { color: #10b981; }
-        .agent-info .status.working { color: #f59e0b; }
-        .agent-info .status.busy { color: #ef4444; }
+        .agent-info .status.idle { color: #64748b; }
 
         .skills {
             display: flex;
@@ -137,38 +135,22 @@
         .current-task {
             background: #0f172a;
             border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 12px;
-            border-left: 3px solid #6366f1;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            border: 1px dashed #334155;
         }
 
-        .current-task label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #64748b;
-            display: block;
-            margin-bottom: 4px;
+        .current-task .idle-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            opacity: 0.5;
         }
 
         .current-task p {
             font-size: 14px;
-            color: #e2e8f0;
-            line-height: 1.4;
-        }
-
-        .task-meta {
-            display: flex;
-            gap: 16px;
-            font-size: 12px;
             color: #64748b;
-            margin-bottom: 16px;
-        }
-
-        .task-meta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            font-style: italic;
         }
 
         .actions {
@@ -181,10 +163,11 @@
             background: #1e293b;
             border: 1px solid #334155;
             color: #e2e8f0;
-            padding: 8px 12px;
+            padding: 10px 12px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
+            font-weight: 500;
             transition: all 0.2s;
         }
 
@@ -310,6 +293,18 @@
             gap: 12px;
         }
 
+        .empty-chat {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-chat-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
         .chat-message {
             display: flex;
             gap: 12px;
@@ -410,11 +405,11 @@
         <!-- 1. Sterling - Trading & Finance -->
         <div class="agent-card">
             <div class="agent-header">
-                <div class="agent-avatar varun">S</div>
+                <div class="agent-avatar sterling">S</div>
                 <div class="agent-info">
                     <h3>Sterling</h3>
                     <div class="role">Finance Advisor & CA</div>
-                    <div class="status online">● Online</div>
+                    <div class="status idle">● Idle — Awaiting Assignment</div>
                 </div>
             </div>
             <div class="skills">
@@ -426,27 +421,23 @@
                 <span class="skill-tag">Tax Planning</span>
             </div>
             <div class="current-task">
-                <label>Currently Working On</label>
-                <p>Rebalancing portfolio after today's NIFTY movements. Evaluating new REIT opportunity.</p>
-            </div>
-            <div class="task-meta">
-                <span>📊 P&L: +₹31K</span>
-                <span>🏠 1 REIT pending</span>
+                <div class="idle-icon">💤</div>
+                <p>No active task assigned</p>
             </div>
             <div class="actions">
                 <button onclick="askAgent('sterling')">Ask Sterling</button>
-                <button class="primary" onclick="assignTask('sterling')">New Task</button>
+                <button class="primary" onclick="assignTask('sterling')">Assign Task</button>
             </div>
         </div>
 
         <!-- 2. Rio - YouTube Manager -->
         <div class="agent-card">
             <div class="agent-header">
-                <div class="agent-avatar maya">R</div>
+                <div class="agent-avatar rio">R</div>
                 <div class="agent-info">
                     <h3>Rio</h3>
                     <div class="role">YouTube & Social Media Manager</div>
-                    <div class="status working">● Working</div>
+                    <div class="status idle">● Idle — Awaiting Assignment</div>
                 </div>
             </div>
             <div class="skills">
@@ -458,27 +449,23 @@
                 <span class="skill-tag">Marketing</span>
             </div>
             <div class="current-task">
-                <label>Currently Working On</label>
-                <p>Analyzing competitor channels in finance niche. Preparing upload schedule for next week.</p>
-            </div>
-            <div class="task-meta">
-                <span>📈 +12% views this week</span>
-                <span>🎬 3 videos queued</span>
+                <div class="idle-icon">💤</div>
+                <p>No active task assigned</p>
             </div>
             <div class="actions">
                 <button onclick="askAgent('rio')">Ask Rio</button>
-                <button class="primary" onclick="assignTask('rio')">New Task</button>
+                <button class="primary" onclick="assignTask('rio')">Assign Task</button>
             </div>
         </div>
 
         <!-- 3. Phoenix - Creative Agent -->
         <div class="agent-card">
             <div class="agent-header">
-                <div class="agent-avatar kavi">P</div>
+                <div class="agent-avatar phoenix">P</div>
                 <div class="agent-info">
                     <h3>Phoenix</h3>
                     <div class="role">Creative Director & Scriptwriter</div>
-                    <div class="status online">● Online</div>
+                    <div class="status idle">● Idle — Awaiting Assignment</div>
                 </div>
             </div>
             <div class="skills">
@@ -490,27 +477,23 @@
                 <span class="skill-tag">Audience Research</span>
             </div>
             <div class="current-task">
-                <label>Currently Working On</label>
-                <p>Writing script for "Options Trading for Beginners" video. Designing thumbnail concepts.</p>
-            </div>
-            <div class="task-meta">
-                <span>✍️ 2 scripts ready</span>
-                <span>🎨 5 thumbnails WIP</span>
+                <div class="idle-icon">💤</div>
+                <p>No active task assigned</p>
             </div>
             <div class="actions">
                 <button onclick="askAgent('phoenix')">Ask Phoenix</button>
-                <button class="primary" onclick="assignTask('phoenix')">New Task</button>
+                <button class="primary" onclick="assignTask('phoenix')">Assign Task</button>
             </div>
         </div>
 
         <!-- 4. Cipher - Developer -->
         <div class="agent-card">
             <div class="agent-header">
-                <div class="agent-avatar rishi">C</div>
+                <div class="agent-avatar cipher">C</div>
                 <div class="agent-info">
                     <h3>Cipher</h3>
                     <div class="role">Lead Developer</div>
-                    <div class="status busy">● Busy</div>
+                    <div class="status idle">● Idle — Awaiting Assignment</div>
                 </div>
             </div>
             <div class="skills">
@@ -522,16 +505,12 @@
                 <span class="skill-tag">Security</span>
             </div>
             <div class="current-task">
-                <label>Currently Working On</label>
-                <p>Building trading bot automation API. Setting up cloud infrastructure monitoring.</p>
-            </div>
-            <div class="task-meta">
-                <span>💻 API 70% done</span>
-                <span>☁️ Infra stable</span>
+                <div class="idle-icon">💤</div>
+                <p>No active task assigned</p>
             </div>
             <div class="actions">
                 <button onclick="askAgent('cipher')">Ask Cipher</button>
-                <button class="primary" onclick="assignTask('cipher')">New Task</button>
+                <button class="primary" onclick="assignTask('cipher')">Assign Task</button>
             </div>
         </div>
 
@@ -542,7 +521,7 @@
                 <div class="agent-info">
                     <h3>Orion</h3>
                     <div class="role">Podbel Project Developer</div>
-                    <div class="status working">● Deep Work</div>
+                    <div class="status idle">● Idle — Awaiting Assignment</div>
                 </div>
             </div>
             <div class="skills">
@@ -554,27 +533,23 @@
                 <span class="skill-tag">Podbel Only</span>
             </div>
             <div class="current-task">
-                <label>Currently Working On (Podbel)</label>
-                <p>Researching travel social media features. Evaluating map integration libraries for trip timeline.</p>
-            </div>
-            <div class="task-meta">
-                <span>🔍 Research: 45%</span>
-                <span>📋 MVP spec drafted</span>
+                <div class="idle-icon">💤</div>
+                <p>No active task assigned</p>
             </div>
             <div class="actions">
                 <button onclick="askAgent('orion')">Ask Orion</button>
-                <button class="primary" onclick="assignTask('orion')">New Task</button>
+                <button class="primary" onclick="assignTask('orion')">Assign Task</button>
             </div>
         </div>
 
         <!-- 6. Juno - Personal & Entertainment -->
         <div class="agent-card">
             <div class="agent-header">
-                <div class="agent-avatar zara">J</div>
+                <div class="agent-avatar juno">J</div>
                 <div class="agent-info">
                     <h3>Juno</h3>
                     <div class="role">Personal Assistant & Lifestyle</div>
-                    <div class="status online">● Available</div>
+                    <div class="status idle">● Idle — Awaiting Assignment</div>
                 </div>
             </div>
             <div class="skills">
@@ -586,16 +561,12 @@
                 <span class="skill-tag">Lifestyle</span>
             </div>
             <div class="current-task">
-                <label>Currently Working On</label>
-                <p>Curating weekend restaurant list in Pune. Researching weekend getaway options.</p>
-            </div>
-            <div class="task-meta">
-                <span>🍽️ 3 restaurants found</span>
-                <span>🚗 2 getaway options</span>
+                <div class="idle-icon">💤</div>
+                <p>No active task assigned</p>
             </div>
             <div class="actions">
                 <button onclick="askAgent('juno')">Ask Juno</button>
-                <button class="primary" onclick="assignTask('juno')">New Task</button>
+                <button class="primary" onclick="assignTask('juno')">Assign Task</button>
             </div>
         </div>
     </div>
@@ -617,53 +588,10 @@
                 <button class="chat-tab" onclick="switchTab('juno')">Juno</button>
             </div>
             <div class="chat-messages" id="chatMessages">
-                <div class="chat-message">
-                    <div class="avatar" style="background: #3b82f6;">C</div>
-                    <div class="content">
-                        <div class="author" style="color: #3b82f6;">Cipher → Rio</div>
-                        <div class="text">YouTube upload API is ready! You can now schedule uploads directly from our dashboard.</div>
-                        <div class="time">15 min ago</div>
-                    </div>
-                </div>
-                <div class="chat-message">
-                    <div class="avatar" style="background: #ef4444;">R</div>
-                    <div class="content">
-                        <div class="author" style="color: #ef4444;">Rio → Cipher</div>
-                        <div class="text">Perfect! This will save me so much time. Thanks Cipher!</div>
-                        <div class="time">12 min ago</div>
-                    </div>
-                </div>
-                <div class="chat-message">
-                    <div class="avatar" style="background: #8b5cf6;">P</div>
-                    <div class="content">
-                        <div class="author" style="color: #8b5cf6;">Phoenix → Orion</div>
-                        <div class="text">Orion, for Podbel's trip timeline - users love seeing photos pinned to locations. Check Instagram's map feature for inspiration.</div>
-                        <div class="time">10 min ago</div>
-                    </div>
-                </div>
-                <div class="chat-message">
-                    <div class="avatar" style="background: #06b6d4;">O</div>
-                    <div class="content">
-                        <div class="author" style="color: #06b6d4;">Orion → Phoenix</div>
-                        <div class="text">Great tip! I'll add that to the UX research doc. Thanks Phoenix!</div>
-                        <div class="time">8 min ago</div>
-                    </div>
-                </div>
-                <div class="chat-message">
-                    <div class="avatar" style="background: #10b981;">S</div>
-                    <div class="content">
-                        <div class="author" style="color: #10b981;">Sterling → All</div>
-                        <div class="text">Market volatility alert! Keeping positions light today. NIFTY looking shaky.</div>
-                        <div class="time">5 min ago</div>
-                    </div>
-                </div>
-                <div class="chat-message">
-                    <div class="avatar" style="background: #f59e0b;">J</div>
-                    <div class="content">
-                        <div class="author" style="color: #f59e0b;">Juno → You</div>
-                        <div class="text">Prasanna, I found a great new restaurant in Pune with 4.8 stars. Should I book for Saturday?</div>
-                        <div class="time">Just now</div>
-                    </div>
+                <div class="empty-chat">
+                    <div class="empty-chat-icon">💬</div>
+                    <p>No conversations yet</p>
+                    <p style="font-size: 13px; margin-top: 8px;">Agents will appear here when they start discussing</p>
                 </div>
             </div>
             <div class="chat-input">
@@ -693,6 +621,12 @@
             if (!text) return;
             
             const messages = document.getElementById('chatMessages');
+            
+            // Remove empty state if present
+            if (messages.querySelector('.empty-chat')) {
+                messages.innerHTML = '';
+            }
+            
             const messageDiv = document.createElement('div');
             messageDiv.className = 'chat-message';
             messageDiv.innerHTML = `
@@ -718,7 +652,9 @@
                 orion: 'Orion (Podbel)',
                 juno: 'Juno (Personal)'
             };
-            alert(`Opening direct message with ${names[agent]}...\n\nIn full version: Nexar would relay your message.`);
+            
+            // In real implementation, this would open direct message with the agent
+            alert(`Opening direct message with ${names[agent]}...\n\nNexar will relay your message to the live agent.`);
         }
 
         function assignTask(agent) {
@@ -730,9 +666,11 @@
                 orion: 'Orion',
                 juno: 'Juno'
             };
+            
             const task = prompt(`What task should ${names[agent]} work on?`);
             if (task) {
-                alert(`Task assigned to ${names[agent]}:\n${task}\n\nNexar will coordinate and track progress.`);
+                // Store task assignment - Nexar will delegate to live agent
+                alert(`✅ Task assigned to ${names[agent]}:\n\n${task}\n\nNexar will delegate this to the live agent and track progress.`);
             }
         }
 

@@ -1,0 +1,48 @@
+{
+  "agents": [
+    {
+      "id": "sterling",
+      "name": "Sterling",
+      "session_key": "agent:main:subagent:fcb6c41c-038c-456f-9bb8-65c0122e5eb3",
+      "status": "idle",
+      "role": "Finance Advisor & CA"
+    },
+    {
+      "id": "rio",
+      "name": "Rio",
+      "session_key": "agent:main:subagent:348f7e4a-b1a0-442e-b028-cd85a332e3d5",
+      "status": "idle",
+      "role": "YouTube & Social Media Manager"
+    },
+    {
+      "id": "phoenix",
+      "name": "Phoenix",
+      "session_key": "agent:main:subagent:8df3f6e1-954f-44b1-b515-e05fadfc117d",
+      "status": "idle",
+      "role": "Creative Director & Scriptwriter"
+    },
+    {
+      "id": "cipher",
+      "name": "Cipher",
+      "session_key": "agent:main:subagent:8da8d77f-8faf-42e0-8243-d23491060140",
+      "status": "idle",
+      "role": "Lead Developer"
+    },
+    {
+      "id": "orion",
+      "name": "Orion",
+      "session_key": "agent:main:subagent:0b824bbd-b0fc-4aca-8f19-e0ce41e05cc6",
+      "status": "idle",
+      "role": "Podbel Project Developer"
+    },
+    {
+      "id": "juno",
+      "name": "Juno",
+      "session_key": "agent:main:subagent:dce8b894-60d8-4d39-a85f-0ce365e86ceb",
+      "status": "idle",
+      "role": "Personal Assistant & Lifestyle"
+    }
+  ],
+  "created_at": "2026-02-09T21:20:00Z",
+  "note": "All agents idle - awaiting task assignment from Prasanna"
+}
