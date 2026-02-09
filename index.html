@@ -116,6 +116,7 @@
         }
 
         .agent-info .status.idle { color: #64748b; }
+        .agent-info .status.working { color: #f59e0b; }
 
         .skills {
             display: flex;
@@ -521,7 +522,7 @@
                 <div class="agent-info">
                     <h3>Orion</h3>
                     <div class="role">Podbel Project Developer</div>
-                    <div class="status idle">● Idle — Awaiting Assignment</div>
+                    <div class="status working">● Working on PODBEL</div>
                 </div>
             </div>
             <div class="skills">
@@ -533,12 +534,16 @@
                 <span class="skill-tag">Podbel Only</span>
             </div>
             <div class="current-task">
-                <div class="idle-icon">💤</div>
-                <p>No active task assigned</p>
+                <label>PODBEL Project</label>
+                <p>Phase 1: Research & Planning - Analyzing travel social platforms, defining MVP features</p>
+            </div>
+            <div class="task-meta">
+                <span>📁 Project initialized</span>
+                <span>📊 10% complete</span>
             </div>
             <div class="actions">
                 <button onclick="askAgent('orion')">Ask Orion</button>
-                <button class="primary" onclick="assignTask('orion')">Assign Task</button>
+                <button class="primary" onclick="viewProject('podbel')">View Project</button>
             </div>
         </div>
 
@@ -671,6 +676,12 @@
             if (task) {
                 // Store task assignment - Nexar will delegate to live agent
                 alert(`✅ Task assigned to ${names[agent]}:\n\n${task}\n\nNexar will delegate this to the live agent and track progress.`);
+            }
+        }
+
+        function viewProject(project) {
+            if (project === 'podbel') {
+                window.open('https://github.com/iphegde/NexDev/tree/main/PODBEL', '_blank');
             }
         }
 
