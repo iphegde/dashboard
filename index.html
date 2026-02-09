@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexar - Mission Control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .header h1 span {
+            color: #6366f1;
+        }
+
+        .chat-btn {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-btn:hover {
+            background: #4f46e5;
+        }
+
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .agent-card {
+            background: #12121a;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .agent-card:hover {
+            border-color: #6366f1;
+        }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .agent-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .agent-avatar.trading { background: #10b981; }
+        .agent-avatar.youtube { background: #ef4444; }
+        .agent-avatar.creative { background: #8b5cf6; }
+        .agent-avatar.dev { background: #3b82f6; }
+        .agent-avatar.personal { background: #f59e0b; }
+
+        .agent-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .agent-info .status {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .agent-info .status.online { color: #10b981; }
+        .agent-info .status.working { color: #f59e0b; }
+        .agent-info .status.busy { color: #ef4444; }
+
+        .current-task {
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .current-task label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .current-task p {
+            font-size: 14px;
+            color: #e2e8f0;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .task-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .actions button {
+            flex: 1;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .actions button:hover {
+            background: #334155;
+        }
+
+        .actions button.primary {
+            background: #6366f1;
+            border-color: #6366f1;
+        }
+
+        .actions button.primary:hover {
+            background: #4f46e5;
+        }
+
+        /* Chat Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+        }
+
+        .chat-modal {
+            background: #12121a;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 800px;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+        .close-btn:hover {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+
+        .chat-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 12px 20px;
+            border-bottom: 1px solid #1e293b;
+            background: #0a0a0f;
+        }
+
+        .chat-tab {
+            background: transparent;
+            border: 1px solid #334155;
+            color: #64748b;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .chat-tab:hover {
+            border-color: #6366f1;
+            color: #e2e8f0;
+        }
+
+        .chat-tab.active {
+            background: #6366f1;
+            border-color: #6366f1;
+            color: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .chat-message .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .chat-message .content {
+            flex: 1;
+            background: #1e293b;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border-top-left-radius: 4px;
+        }
+
+        .chat-message .author {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6366f1;
+            margin-bottom: 2px;
+        }
+
+        .chat-message .text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .chat-message .time {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            border-top: 1px solid #1e293b;
+            background: #0a0a0f;
+        }
+
+        .chat-input input {
+            flex: 1;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .chat-input button {
+            background: #6366f1;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .agents-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-modal {
+                width: 95%;
+                height: 90vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Mission Control <span>— Prasanna's Team</span></h1>
+        <button class="chat-btn" onclick="openChat()">
+            💬 View Conversations
+        </button>
+    </div>
+
+    <div class="agents-grid">
+        <!-- Trading & Finance -->
+        <div class="agent-card">
+            <div class="agent-header">
+                <div class="agent-avatar trading">₹</div>
+                <div class="agent-info">
+                    <h3>Trading & Finance</h3>
+                    <span class="status online">● Online</span>
+                </div>
+            </div>
+            <div class="current-task">
+                <label>Currently Working On</label>
+                <p>Analyzing NIFTY50 positions for tomorrow's open</p>
+            </div>
+            <div class="task-meta">
+                <span>📊 P&L Today: +₹24K</span>
+                <span>⏱️ Est: 2 hrs</span>
+            </div>
+            <div class="actions">
+                <button onclick="askAgent('trading')">Ask Question</button>
+                <button class="primary" onclick="assignTask('trading')">New Task</button>
+            </div>
+        </div>
+
+        <!-- YouTube Manager -->
+        <div class="agent-card">
+            <div class="agent-header">
+                <div class="agent-avatar youtube">▶</div>
+                <div class="agent-info">
+                    <h3>YouTube Manager</h3>
+                    <span class="status working">● Working</span>
+                </div>
+            </div>
+            <div class="current-task">
+                <label>Currently Working On</label>
+                <p>Editing "Options Trading Basics" video for tomorrow's upload</p>
+            </div>
+            <div class="task-meta">
+                <span>🎬 2 videos queued</span>
+                <span>⏱️ Est: 4 hrs</span>
+            </div>
+            <div class="actions">
+                <button onclick="askAgent('youtube')">Ask Question</button>
+                <button class="primary" onclick="assignTask('youtube')">New Task</button>
+            </div>
+        </div>
+
+        <!-- Creative Agent -->
+        <div class="agent-card">
+            <div class="agent-header">
+                <div class="agent-avatar creative">✦</div>
+                <div class="agent-info">
+                    <h3>Creative Agent</h3>
+                    <span class="status online">● Online</span>
+                </div>
+            </div>
+            <div class="current-task">
+                <label>Currently Working On</label>
+                <p>Designing thumbnail set for Cartoon Finance channel</p>
+            </div>
+            <div class="task-meta">
+                <span>🎨 5 thumbnails pending</span>
+                <span>⏱️ Est: 3 hrs</span>
+            </div>
+            <div class="actions">
+                <button onclick="askAgent('creative')">Ask Question</button>
+                <button class="primary" onclick="assignTask('creative')">New Task</button>
+            </div>
+        </div>
+
+        <!-- Developer -->
+        <div class="agent-card">
+            <div class="agent-header">
+                <div class="agent-avatar dev">⌥</div>
+                <div class="agent-info">
+                    <h3>Developer</h3>
+                    <span class="status busy">● Busy</span>
+                </div>
+            </div>
+            <div class="current-task">
+                <label>Currently Working On</label>
+                <p>Building API integration for trading bot automation</p>
+            </div>
+            <div class="task-meta">
+                <span>💻 3 tasks in queue</span>
+                <span>⏱️ Est: 6 hrs</span>
+            </div>
+            <div class="actions">
+                <button onclick="askAgent('dev')">Ask Question</button>
+                <button class="primary" onclick="assignTask('dev')">New Task</button>
+            </div>
+        </div>
+
+        <!-- Personal & Entertainment -->
+        <div class="agent-card">
+            <div class="agent-header">
+                <div class="agent-avatar personal">★</div>
+                <div class="agent-info">
+                    <h3>Personal & Entertainment</h3>
+                    <span class="status online">● Online</span>
+                </div>
+            </div>
+            <div class="current-task">
+                <label>Currently Working On</label>
+                <p>Curating weekend watchlist and restaurant recommendations</p>
+            </div>
+            <div class="task-meta">
+                <span>🎯 2 recommendations ready</span>
+                <span>⏱️ Est: 1 hr</span>
+            </div>
+            <div class="actions">
+                <button onclick="askAgent('personal')">Ask Question</button>
+                <button class="primary" onclick="assignTask('personal')">New Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="modal-overlay" id="chatModal">
+        <div class="chat-modal">
+            <div class="modal-header">
+                <h2>💬 Team Conversations</h2>
+                <button class="close-btn" onclick="closeChat()">×</button>
+            </div>
+            <div class="chat-tabs">
+                <button class="chat-tab active" onclick="switchTab('all')">All</button>
+                <button class="chat-tab" onclick="switchTab('trading')">Trading</button>
+                <button class="chat-tab" onclick="switchTab('youtube')">YouTube</button>
+                <button class="chat-tab" onclick="switchTab('creative')">Creative</button>
+                <button class="chat-tab" onclick="switchTab('dev')">Dev</button>
+                <button class="chat-tab" onclick="switchTab('personal')">Personal</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message">
+                    <div class="avatar" style="background: #3b82f6;">⌥</div>
+                    <div class="content">
+                        <div class="author">Developer → YouTube Manager</div>
+                        <div class="text">The video upload API is ready. You can start uploading directly from the dashboard now.</div>
+                        <div class="time">10 min ago</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="avatar" style="background: #ef4444;">▶</div>
+                    <div class="content">
+                        <div class="author">YouTube Manager → Developer</div>
+                        <div class="text">Perfect! That'll save me 30 mins per upload. Thanks!</div>
+                        <div class="time">8 min ago</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="avatar" style="background: #10b981;">₹</div>
+                    <div class="content">
+                        <div class="author">Trading & Finance → All</div>
+                        <div class="text">Market looking volatile today. Keeping positions light until NIFTY stabilizes.</div>
+                        <div class="time">5 min ago</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="avatar" style="background: #f59e0b;">★</div>
+                    <div class="content">
+                        <div class="author">Personal → You</div>
+                        <div class="text">Found 3 new restaurants in Pune you might like. Shall I book for weekend?</div>
+                        <div class="time">Just now</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Send a message to your team..." id="chatInput">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openChat() {
+            document.getElementById('chatModal').classList.add('visible');
+        }
+
+        function closeChat() {
+            document.getElementById('chatModal').classList.remove('visible');
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // In real implementation, filter messages by tab
+            console.log('Switched to:', tab);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            // Add message to chat
+            const messages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message';
+            messageDiv.innerHTML = `
+                <div class="avatar" style="background: #6366f1;">P</div>
+                <div class="content">
+                    <div class="author">Prasanna → All</div>
+                    <div class="text">${text}</div>
+                    <div class="time">Just now</div>
+                </div>
+            `;
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+            
+            input.value = '';
+        }
+
+        function askAgent(agent) {
+            alert(`Opening chat with ${agent} agent...\n\n(In full version, this would open direct message)`);
+        }
+
+        function assignTask(agent) {
+            const task = prompt(`What task should the ${agent} agent work on?`);
+            if (task) {
+                alert(`Task assigned to ${agent} agent:\n${task}\n\nNexar will coordinate this.`);
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('chatModal').addEventListener('click', function(e) {
+            if (e.target === this) closeChat();
+        });
+
+        // Enter to send
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
