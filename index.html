@@ -57,7 +57,7 @@
 
         .agents-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
         }
 
@@ -81,21 +81,23 @@
         }
 
         .agent-avatar {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            font-size: 18px;
+            font-weight: 700;
+            font-size: 20px;
+            flex-shrink: 0;
         }
 
-        .agent-avatar.trading { background: #10b981; }
-        .agent-avatar.youtube { background: #ef4444; }
-        .agent-avatar.creative { background: #8b5cf6; }
-        .agent-avatar.dev { background: #3b82f6; }
-        .agent-avatar.personal { background: #f59e0b; }
+        .agent-avatar.varun { background: #10b981; }
+        .agent-avatar.maya { background: #ef4444; }
+        .agent-avatar.kavi { background: #8b5cf6; }
+        .agent-avatar.rishi { background: #3b82f6; }
+        .agent-avatar.orion { background: #06b6d4; }
+        .agent-avatar.zara { background: #f59e0b; }
 
         .agent-info h3 {
             font-size: 16px;
@@ -103,24 +105,45 @@
             margin-bottom: 2px;
         }
 
+        .agent-info .role {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
         .agent-info .status {
-            font-size: 13px;
-            color: #64748b;
+            font-size: 12px;
+            margin-top: 2px;
         }
 
         .agent-info .status.online { color: #10b981; }
         .agent-info .status.working { color: #f59e0b; }
         .agent-info .status.busy { color: #ef4444; }
 
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .skill-tag {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+
         .current-task {
             background: #0f172a;
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 12px;
+            border-left: 3px solid #6366f1;
         }
 
         .current-task label {
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: #64748b;
@@ -131,13 +154,15 @@
         .current-task p {
             font-size: 14px;
             color: #e2e8f0;
+            line-height: 1.4;
         }
 
         .task-meta {
             display: flex;
             gap: 16px;
-            font-size: 13px;
+            font-size: 12px;
             color: #64748b;
+            margin-bottom: 16px;
         }
 
         .task-meta span {
@@ -149,7 +174,6 @@
         .actions {
             display: flex;
             gap: 8px;
-            margin-top: 16px;
         }
 
         .actions button {
@@ -246,6 +270,12 @@
             padding: 12px 20px;
             border-bottom: 1px solid #1e293b;
             background: #0a0a0f;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .chat-tabs::-webkit-scrollbar {
+            display: none;
         }
 
         .chat-tab {
@@ -257,6 +287,7 @@
             cursor: pointer;
             font-size: 13px;
             transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .chat-tab:hover {
@@ -292,8 +323,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             flex-shrink: 0;
         }
 
@@ -308,7 +339,6 @@
         .chat-message .author {
             font-size: 12px;
             font-weight: 600;
-            color: #6366f1;
             margin-bottom: 2px;
         }
 
@@ -377,118 +407,195 @@
     </div>
 
     <div class="agents-grid">
-        <!-- Trading & Finance -->
+        <!-- 1. Varun - Trading & Finance -->
         <div class="agent-card">
             <div class="agent-header">
-                <div class="agent-avatar trading">₹</div>
+                <div class="agent-avatar varun">V</div>
                 <div class="agent-info">
-                    <h3>Trading & Finance</h3>
-                    <span class="status online">● Online</span>
+                    <h3>Varun</h3>
+                    <div class="role">Finance Advisor & CA</div>
+                    <div class="status online">● Online</div>
                 </div>
+            </div>
+            <div class="skills">
+                <span class="skill-tag">Trading</span>
+                <span class="skill-tag">Investments</span>
+                <span class="skill-tag">Stocks</span>
+                <span class="skill-tag">Real Estate</span>
+                <span class="skill-tag">Strategy</span>
+                <span class="skill-tag">Tax Planning</span>
             </div>
             <div class="current-task">
                 <label>Currently Working On</label>
-                <p>Analyzing NIFTY50 positions for tomorrow's open</p>
+                <p>Rebalancing portfolio after today's NIFTY movements. Evaluating new REIT opportunity.</p>
             </div>
             <div class="task-meta">
-                <span>📊 P&L Today: +₹24K</span>
-                <span>⏱️ Est: 2 hrs</span>
+                <span>📊 P&L: +₹31K</span>
+                <span>🏠 1 REIT pending</span>
             </div>
             <div class="actions">
-                <button onclick="askAgent('trading')">Ask Question</button>
-                <button class="primary" onclick="assignTask('trading')">New Task</button>
+                <button onclick="askAgent('varun')">Ask Varun</button>
+                <button class="primary" onclick="assignTask('varun')">New Task</button>
             </div>
         </div>
 
-        <!-- YouTube Manager -->
+        <!-- 2. Maya - YouTube Manager -->
         <div class="agent-card">
             <div class="agent-header">
-                <div class="agent-avatar youtube">▶</div>
+                <div class="agent-avatar maya">M</div>
                 <div class="agent-info">
-                    <h3>YouTube Manager</h3>
-                    <span class="status working">● Working</span>
+                    <h3>Maya</h3>
+                    <div class="role">YouTube & Social Media Manager</div>
+                    <div class="status working">● Working</div>
                 </div>
+            </div>
+            <div class="skills">
+                <span class="skill-tag">YouTube Analytics</span>
+                <span class="skill-tag">Competitor Research</span>
+                <span class="skill-tag">Video Strategy</span>
+                <span class="skill-tag">Shorts</span>
+                <span class="skill-tag">Social Media</span>
+                <span class="skill-tag">Marketing</span>
             </div>
             <div class="current-task">
                 <label>Currently Working On</label>
-                <p>Editing "Options Trading Basics" video for tomorrow's upload</p>
+                <p>Analyzing competitor channels in finance niche. Preparing upload schedule for next week.</p>
             </div>
             <div class="task-meta">
-                <span>🎬 2 videos queued</span>
-                <span>⏱️ Est: 4 hrs</span>
+                <span>📈 +12% views this week</span>
+                <span>🎬 3 videos queued</span>
             </div>
             <div class="actions">
-                <button onclick="askAgent('youtube')">Ask Question</button>
-                <button class="primary" onclick="assignTask('youtube')">New Task</button>
+                <button onclick="askAgent('maya')">Ask Maya</button>
+                <button class="primary" onclick="assignTask('maya')">New Task</button>
             </div>
         </div>
 
-        <!-- Creative Agent -->
+        <!-- 3. Kavi - Creative Agent -->
         <div class="agent-card">
             <div class="agent-header">
-                <div class="agent-avatar creative">✦</div>
+                <div class="agent-avatar kavi">K</div>
                 <div class="agent-info">
-                    <h3>Creative Agent</h3>
-                    <span class="status online">● Online</span>
+                    <h3>Kavi</h3>
+                    <div class="role">Creative Director & Scriptwriter</div>
+                    <div class="status online">● Online</div>
                 </div>
+            </div>
+            <div class="skills">
+                <span class="skill-tag">Scriptwriting</span>
+                <span class="skill-tag">Storytelling</span>
+                <span class="skill-tag">Content Ideas</span>
+                <span class="skill-tag">UI/UX</span>
+                <span class="skill-tag">Trends</span>
+                <span class="skill-tag">Audience Research</span>
             </div>
             <div class="current-task">
                 <label>Currently Working On</label>
-                <p>Designing thumbnail set for Cartoon Finance channel</p>
+                <p>Writing script for "Options Trading for Beginners" video. Designing thumbnail concepts.</p>
             </div>
             <div class="task-meta">
-                <span>🎨 5 thumbnails pending</span>
-                <span>⏱️ Est: 3 hrs</span>
+                <span>✍️ 2 scripts ready</span>
+                <span>🎨 5 thumbnails WIP</span>
             </div>
             <div class="actions">
-                <button onclick="askAgent('creative')">Ask Question</button>
-                <button class="primary" onclick="assignTask('creative')">New Task</button>
+                <button onclick="askAgent('kavi')">Ask Kavi</button>
+                <button class="primary" onclick="assignTask('kavi')">New Task</button>
             </div>
         </div>
 
-        <!-- Developer -->
+        <!-- 4. Rishi - Developer -->
         <div class="agent-card">
             <div class="agent-header">
-                <div class="agent-avatar dev">⌥</div>
+                <div class="agent-avatar rishi">R</div>
                 <div class="agent-info">
-                    <h3>Developer</h3>
-                    <span class="status busy">● Busy</span>
+                    <h3>Rishi</h3>
+                    <div class="role">Lead Developer</div>
+                    <div class="status busy">● Busy</div>
                 </div>
+            </div>
+            <div class="skills">
+                <span class="skill-tag">Full Stack</span>
+                <span class="skill-tag">APIs</span>
+                <span class="skill-tag">Automation</span>
+                <span class="skill-tag">Cloud</span>
+                <span class="skill-tag">DevOps</span>
+                <span class="skill-tag">Security</span>
             </div>
             <div class="current-task">
                 <label>Currently Working On</label>
-                <p>Building API integration for trading bot automation</p>
+                <p>Building trading bot automation API. Setting up cloud infrastructure monitoring.</p>
             </div>
             <div class="task-meta">
-                <span>💻 3 tasks in queue</span>
-                <span>⏱️ Est: 6 hrs</span>
+                <span>💻 API 70% done</span>
+                <span>☁️ Infra stable</span>
             </div>
             <div class="actions">
-                <button onclick="askAgent('dev')">Ask Question</button>
-                <button class="primary" onclick="assignTask('dev')">New Task</button>
+                <button onclick="askAgent('rishi')">Ask Rishi</button>
+                <button class="primary" onclick="assignTask('rishi')">New Task</button>
             </div>
         </div>
 
-        <!-- Personal & Entertainment -->
+        <!-- 5. Orion - Podbel Developer -->
         <div class="agent-card">
             <div class="agent-header">
-                <div class="agent-avatar personal">★</div>
+                <div class="agent-avatar orion">O</div>
                 <div class="agent-info">
-                    <h3>Personal & Entertainment</h3>
-                    <span class="status online">● Online</span>
+                    <h3>Orion</h3>
+                    <div class="role">Podbel Project Developer</div>
+                    <div class="status working">● Deep Work</div>
                 </div>
+            </div>
+            <div class="skills">
+                <span class="skill-tag">Mobile Dev</span>
+                <span class="skill-tag">Social Platforms</span>
+                <span class="skill-tag">Maps & Location</span>
+                <span class="skill-tag">Research</span>
+                <span class="skill-tag">Travel Tech</span>
+                <span class="skill-tag">Podbel Only</span>
+            </div>
+            <div class="current-task">
+                <label>Currently Working On (Podbel)</label>
+                <p>Researching travel social media features. Evaluating map integration libraries for trip timeline.</p>
+            </div>
+            <div class="task-meta">
+                <span>🔍 Research: 45%</span>
+                <span>📋 MVP spec drafted</span>
+            </div>
+            <div class="actions">
+                <button onclick="askAgent('orion')">Ask Orion</button>
+                <button class="primary" onclick="assignTask('orion')">New Task</button>
+            </div>
+        </div>
+
+        <!-- 6. Zara - Personal & Entertainment -->
+        <div class="agent-card">
+            <div class="agent-header">
+                <div class="agent-avatar zara">Z</div>
+                <div class="agent-info">
+                    <h3>Zara</h3>
+                    <div class="role">Personal Assistant & Lifestyle</div>
+                    <div class="status online">● Available</div>
+                </div>
+            </div>
+            <div class="skills">
+                <span class="skill-tag">Scheduling</span>
+                <span class="skill-tag">Research</span>
+                <span class="skill-tag">Travel</span>
+                <span class="skill-tag">Recommendations</span>
+                <span class="skill-tag">Tasks</span>
+                <span class="skill-tag">Lifestyle</span>
             </div>
             <div class="current-task">
                 <label>Currently Working On</label>
-                <p>Curating weekend watchlist and restaurant recommendations</p>
+                <p>Curating weekend restaurant list in Pune. Researching weekend getaway options.</p>
             </div>
             <div class="task-meta">
-                <span>🎯 2 recommendations ready</span>
-                <span>⏱️ Est: 1 hr</span>
+                <span>🍽️ 3 restaurants found</span>
+                <span>🚗 2 getaway options</span>
             </div>
             <div class="actions">
-                <button onclick="askAgent('personal')">Ask Question</button>
-                <button class="primary" onclick="assignTask('personal')">New Task</button>
+                <button onclick="askAgent('zara')">Ask Zara</button>
+                <button class="primary" onclick="assignTask('zara')">New Task</button>
             </div>
         </div>
     </div>
@@ -502,42 +609,59 @@
             </div>
             <div class="chat-tabs">
                 <button class="chat-tab active" onclick="switchTab('all')">All</button>
-                <button class="chat-tab" onclick="switchTab('trading')">Trading</button>
-                <button class="chat-tab" onclick="switchTab('youtube')">YouTube</button>
-                <button class="chat-tab" onclick="switchTab('creative')">Creative</button>
-                <button class="chat-tab" onclick="switchTab('dev')">Dev</button>
-                <button class="chat-tab" onclick="switchTab('personal')">Personal</button>
+                <button class="chat-tab" onclick="switchTab('varun')">Varun</button>
+                <button class="chat-tab" onclick="switchTab('maya')">Maya</button>
+                <button class="chat-tab" onclick="switchTab('kavi')">Kavi</button>
+                <button class="chat-tab" onclick="switchTab('rishi')">Rishi</button>
+                <button class="chat-tab" onclick="switchTab('orion')">Orion</button>
+                <button class="chat-tab" onclick="switchTab('zara')">Zara</button>
             </div>
             <div class="chat-messages" id="chatMessages">
                 <div class="chat-message">
-                    <div class="avatar" style="background: #3b82f6;">⌥</div>
+                    <div class="avatar" style="background: #3b82f6;">R</div>
                     <div class="content">
-                        <div class="author">Developer → YouTube Manager</div>
-                        <div class="text">The video upload API is ready. You can start uploading directly from the dashboard now.</div>
+                        <div class="author" style="color: #3b82f6;">Rishi → Maya</div>
+                        <div class="text">YouTube upload API is ready! You can now schedule uploads directly from our dashboard.</div>
+                        <div class="time">15 min ago</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="avatar" style="background: #ef4444;">M</div>
+                    <div class="content">
+                        <div class="author" style="color: #ef4444;">Maya → Rishi</div>
+                        <div class="text">Perfect! This will save me so much time. Thanks Rishi!</div>
+                        <div class="time">12 min ago</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="avatar" style="background: #8b5cf6;">K</div>
+                    <div class="content">
+                        <div class="author" style="color: #8b5cf6;">Kavi → Orion</div>
+                        <div class="text">Orion, for Podbel's trip timeline - users love seeing photos pinned to locations. Check Instagram's map feature for inspiration.</div>
                         <div class="time">10 min ago</div>
                     </div>
                 </div>
                 <div class="chat-message">
-                    <div class="avatar" style="background: #ef4444;">▶</div>
+                    <div class="avatar" style="background: #06b6d4;">O</div>
                     <div class="content">
-                        <div class="author">YouTube Manager → Developer</div>
-                        <div class="text">Perfect! That'll save me 30 mins per upload. Thanks!</div>
+                        <div class="author" style="color: #06b6d4;">Orion → Kavi</div>
+                        <div class="text">Great tip! I'll add that to the UX research doc. Thanks Kavi!</div>
                         <div class="time">8 min ago</div>
                     </div>
                 </div>
                 <div class="chat-message">
-                    <div class="avatar" style="background: #10b981;">₹</div>
+                    <div class="avatar" style="background: #10b981;">V</div>
                     <div class="content">
-                        <div class="author">Trading & Finance → All</div>
-                        <div class="text">Market looking volatile today. Keeping positions light until NIFTY stabilizes.</div>
+                        <div class="author" style="color: #10b981;">Varun → All</div>
+                        <div class="text">Market volatility alert! Keeping positions light today. NIFTY looking shaky.</div>
                         <div class="time">5 min ago</div>
                     </div>
                 </div>
                 <div class="chat-message">
-                    <div class="avatar" style="background: #f59e0b;">★</div>
+                    <div class="avatar" style="background: #f59e0b;">Z</div>
                     <div class="content">
-                        <div class="author">Personal → You</div>
-                        <div class="text">Found 3 new restaurants in Pune you might like. Shall I book for weekend?</div>
+                        <div class="author" style="color: #f59e0b;">Zara → You</div>
+                        <div class="text">Prasanna, I found a great new restaurant in Pune with 4.8 stars. Should I book for Saturday?</div>
                         <div class="time">Just now</div>
                     </div>
                 </div>
@@ -561,9 +685,6 @@
         function switchTab(tab) {
             document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
-            
-            // In real implementation, filter messages by tab
-            console.log('Switched to:', tab);
         }
 
         function sendMessage() {
@@ -571,14 +692,13 @@
             const text = input.value.trim();
             if (!text) return;
             
-            // Add message to chat
             const messages = document.getElementById('chatMessages');
             const messageDiv = document.createElement('div');
             messageDiv.className = 'chat-message';
             messageDiv.innerHTML = `
                 <div class="avatar" style="background: #6366f1;">P</div>
                 <div class="content">
-                    <div class="author">Prasanna → All</div>
+                    <div class="author" style="color: #6366f1;">Prasanna → All</div>
                     <div class="text">${text}</div>
                     <div class="time">Just now</div>
                 </div>
@@ -590,22 +710,36 @@
         }
 
         function askAgent(agent) {
-            alert(`Opening chat with ${agent} agent...\n\n(In full version, this would open direct message)`);
+            const names = {
+                varun: 'Varun (Finance)',
+                maya: 'Maya (YouTube)',
+                kavi: 'Kavi (Creative)',
+                rishi: 'Rishi (Dev)',
+                orion: 'Orion (Podbel)',
+                zara: 'Zara (Personal)'
+            };
+            alert(`Opening direct message with ${names[agent]}...\n\nIn full version: Nexar would relay your message.`);
         }
 
         function assignTask(agent) {
-            const task = prompt(`What task should the ${agent} agent work on?`);
+            const names = {
+                varun: 'Varun',
+                maya: 'Maya',
+                kavi: 'Kavi',
+                rishi: 'Rishi',
+                orion: 'Orion',
+                zara: 'Zara'
+            };
+            const task = prompt(`What task should ${names[agent]} work on?`);
             if (task) {
-                alert(`Task assigned to ${agent} agent:\n${task}\n\nNexar will coordinate this.`);
+                alert(`Task assigned to ${names[agent]}:\n${task}\n\nNexar will coordinate and track progress.`);
             }
         }
 
-        // Close modal on outside click
         document.getElementById('chatModal').addEventListener('click', function(e) {
             if (e.target === this) closeChat();
         });
 
-        // Enter to send
         document.getElementById('chatInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') sendMessage();
         });
