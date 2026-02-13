@@ -38,6 +38,18 @@ ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}';
 ALTER TABLE agents 
 ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
 
+-- Add unique constraint on name column if not exists
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint 
+        WHERE conname = 'agents_name_key' 
+        AND conrelid = 'agents'::regclass
+    ) THEN
+        ALTER TABLE agents ADD CONSTRAINT agents_name_key UNIQUE (name);
+    END IF;
+END $$;
+
 -- Update display_name for existing agents (use name as fallback)
 UPDATE agents SET display_name = name WHERE display_name IS NULL;
 
