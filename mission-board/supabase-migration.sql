@@ -50,18 +50,35 @@ BEGIN
     END IF;
 END $$;
 
+-- Set default UUID generation for id column if it's missing
+DO $$
+BEGIN
+    -- Check if id column exists and doesn't have a default
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'agents' AND column_name = 'id'
+    ) THEN
+        -- Try to set default - may fail if already set, that's ok
+        BEGIN
+            ALTER TABLE agents ALTER COLUMN id SET DEFAULT uuid_generate_v4();
+        EXCEPTION WHEN OTHERS THEN
+            NULL; -- Ignore if already has default or other issue
+        END;
+    END IF;
+END $$;
+
 -- Update display_name for existing agents (use name as fallback)
 UPDATE agents SET display_name = name WHERE display_name IS NULL;
 
--- Insert the 7 agents if they don't exist
-INSERT INTO agents (name, display_name, description, color) VALUES
-    ('Nexar', 'Nexar', 'Strategic coordinator', '#EF4444'),
-    ('Rio', 'Rio', 'Data analyst', '#3B82F6'),
-    ('Orion', 'Orion', 'Research specialist', '#10B981'),
-    ('Juno', 'Juno', 'Creative assistant', '#F59E0B'),
-    ('Cipher', 'Cipher', 'Security & encryption', '#8B5CF6'),
-    ('Phoenix', 'Phoenix', 'System architect', '#EC4899'),
-    ('Sterling', 'Sterling', 'Business logic', '#06B6D4')
+-- Insert the 7 agents if they don't exist (with explicit UUIDs)
+INSERT INTO agents (id, name, display_name, description, color) VALUES
+    (uuid_generate_v4(), 'Nexar', 'Nexar', 'Strategic coordinator', '#EF4444'),
+    (uuid_generate_v4(), 'Rio', 'Rio', 'Data analyst', '#3B82F6'),
+    (uuid_generate_v4(), 'Orion', 'Orion', 'Research specialist', '#10B981'),
+    (uuid_generate_v4(), 'Juno', 'Juno', 'Creative assistant', '#F59E0B'),
+    (uuid_generate_v4(), 'Cipher', 'Cipher', 'Security & encryption', '#8B5CF6'),
+    (uuid_generate_v4(), 'Phoenix', 'Phoenix', 'System architect', '#EC4899'),
+    (uuid_generate_v4(), 'Sterling', 'Sterling', 'Business logic', '#06B6D4')
 ON CONFLICT (name) DO UPDATE SET 
     display_name = EXCLUDED.display_name,
     description = EXCLUDED.description,
