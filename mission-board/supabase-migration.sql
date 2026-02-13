@@ -18,6 +18,10 @@ ADD COLUMN IF NOT EXISTS display_name VARCHAR(100);
 ALTER TABLE agents 
 ADD COLUMN IF NOT EXISTS description TEXT;
 
+-- Add role if missing
+ALTER TABLE agents 
+ADD COLUMN IF NOT EXISTS role VARCHAR(50);
+
 -- Add color if missing  
 ALTER TABLE agents 
 ADD COLUMN IF NOT EXISTS color VARCHAR(7) DEFAULT '#3B82F6';
@@ -70,19 +74,20 @@ END $$;
 -- Update display_name for existing agents (use name as fallback)
 UPDATE agents SET display_name = name WHERE display_name IS NULL;
 
--- Insert the 7 agents if they don't exist (with explicit UUIDs)
-INSERT INTO agents (id, name, display_name, description, color) VALUES
-    (uuid_generate_v4(), 'Nexar', 'Nexar', 'Strategic coordinator', '#EF4444'),
-    (uuid_generate_v4(), 'Rio', 'Rio', 'Data analyst', '#3B82F6'),
-    (uuid_generate_v4(), 'Orion', 'Orion', 'Research specialist', '#10B981'),
-    (uuid_generate_v4(), 'Juno', 'Juno', 'Creative assistant', '#F59E0B'),
-    (uuid_generate_v4(), 'Cipher', 'Cipher', 'Security & encryption', '#8B5CF6'),
-    (uuid_generate_v4(), 'Phoenix', 'Phoenix', 'System architect', '#EC4899'),
-    (uuid_generate_v4(), 'Sterling', 'Sterling', 'Business logic', '#06B6D4')
+-- Insert the 7 agents if they don't exist (with explicit UUIDs and roles)
+INSERT INTO agents (id, name, display_name, description, color, role) VALUES
+    (uuid_generate_v4(), 'Nexar', 'Nexar', 'Strategic coordinator', '#EF4444', 'Coordinator'),
+    (uuid_generate_v4(), 'Rio', 'Rio', 'Data analyst', '#3B82F6', 'Analyst'),
+    (uuid_generate_v4(), 'Orion', 'Orion', 'Research specialist', '#10B981', 'Researcher'),
+    (uuid_generate_v4(), 'Juno', 'Juno', 'Creative assistant', '#F59E0B', 'Creative'),
+    (uuid_generate_v4(), 'Cipher', 'Cipher', 'Security & encryption', '#8B5CF6', 'Developer'),
+    (uuid_generate_v4(), 'Phoenix', 'Phoenix', 'System architect', '#EC4899', 'Architect'),
+    (uuid_generate_v4(), 'Sterling', 'Sterling', 'Business logic', '#06B6D4', 'Advisor')
 ON CONFLICT (name) DO UPDATE SET 
     display_name = EXCLUDED.display_name,
     description = EXCLUDED.description,
-    color = EXCLUDED.color;
+    color = EXCLUDED.color,
+    role = EXCLUDED.role;
 
 -- ============================================
 -- STEP 2: CREATE CONVERSATIONS TABLE
