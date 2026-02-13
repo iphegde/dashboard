@@ -175,29 +175,40 @@ ALTER TABLE token_usage_stats ENABLE ROW LEVEL SECURITY;
 ALTER TABLE agents ENABLE ROW LEVEL SECURITY;
 
 -- Create policies for service role access
-CREATE POLICY IF NOT EXISTS "Allow all access to service role" ON agents
+-- First drop existing policies to avoid conflicts
+DROP POLICY IF EXISTS "Allow all access to service role" ON agents;
+DROP POLICY IF EXISTS "Allow all access to service role" ON conversations;
+DROP POLICY IF EXISTS "Allow all access to service role" ON conversation_messages;
+DROP POLICY IF EXISTS "Allow all access to service role" ON token_usage_stats;
+DROP POLICY IF EXISTS "Allow anonymous read" ON agents;
+DROP POLICY IF EXISTS "Allow anonymous read" ON conversations;
+DROP POLICY IF EXISTS "Allow anonymous read" ON conversation_messages;
+DROP POLICY IF EXISTS "Allow anonymous read" ON token_usage_stats;
+
+-- Create policies for service role access
+CREATE POLICY "Allow all access to service role" ON agents
     FOR ALL USING (auth.role() = 'service_role');
     
-CREATE POLICY IF NOT EXISTS "Allow all access to service role" ON conversations
+CREATE POLICY "Allow all access to service role" ON conversations
     FOR ALL USING (auth.role() = 'service_role');
     
-CREATE POLICY IF NOT EXISTS "Allow all access to service role" ON conversation_messages
+CREATE POLICY "Allow all access to service role" ON conversation_messages
     FOR ALL USING (auth.role() = 'service_role');
 
-CREATE POLICY IF NOT EXISTS "Allow all access to service role" ON token_usage_stats
+CREATE POLICY "Allow all access to service role" ON token_usage_stats
     FOR ALL USING (auth.role() = 'service_role');
 
 -- Allow anonymous read access
-CREATE POLICY IF NOT EXISTS "Allow anonymous read" ON agents
+CREATE POLICY "Allow anonymous read" ON agents
     FOR SELECT TO anon USING (true);
     
-CREATE POLICY IF NOT EXISTS "Allow anonymous read" ON conversations
+CREATE POLICY "Allow anonymous read" ON conversations
     FOR SELECT TO anon USING (true);
     
-CREATE POLICY IF NOT EXISTS "Allow anonymous read" ON conversation_messages
+CREATE POLICY "Allow anonymous read" ON conversation_messages
     FOR SELECT TO anon USING (true);
 
-CREATE POLICY IF NOT EXISTS "Allow anonymous read" ON token_usage_stats
+CREATE POLICY "Allow anonymous read" ON token_usage_stats
     FOR SELECT TO anon USING (true);
 
 -- ============================================
