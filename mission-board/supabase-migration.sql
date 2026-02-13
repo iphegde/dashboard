@@ -7,87 +7,107 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- ============================================
 -- STEP 1: UPDATE EXISTING AGENTS TABLE
--- Add missing columns if they don't exist
+-- Add ALL missing columns that may have NOT NULL constraints
 -- ============================================
 
+-- Add id default if missing
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'agents' AND column_name = 'id') THEN
+        BEGIN
+            ALTER TABLE agents ALTER COLUMN id SET DEFAULT uuid_generate_v4();
+        EXCEPTION WHEN OTHERS THEN NULL;
+        END;
+    END IF;
+END $$;
+
 -- Add display_name if missing
-ALTER TABLE agents 
-ADD COLUMN IF NOT EXISTS display_name VARCHAR(100);
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS display_name VARCHAR(100);
 
 -- Add description if missing
-ALTER TABLE agents 
-ADD COLUMN IF NOT EXISTS description TEXT;
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS description TEXT;
 
 -- Add role if missing
-ALTER TABLE agents 
-ADD COLUMN IF NOT EXISTS role VARCHAR(50);
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS role VARCHAR(50);
+
+-- Add department if missing
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS department VARCHAR(100);
 
 -- Add color if missing  
-ALTER TABLE agents 
-ADD COLUMN IF NOT EXISTS color VARCHAR(7) DEFAULT '#3B82F6';
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS color VARCHAR(7) DEFAULT '#3B82F6';
 
 -- Add avatar_url if missing
-ALTER TABLE agents 
-ADD COLUMN IF NOT EXISTS avatar_url TEXT;
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS avatar_url TEXT;
 
 -- Add is_active if missing
-ALTER TABLE agents 
-ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
+
+-- Add status if missing
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'active';
+
+-- Add archetype if missing
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS archetype VARCHAR(100);
+
+-- Add collaboration_network if missing
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS collaboration_network JSONB DEFAULT '[]';
 
 -- Add metadata JSONB if missing
-ALTER TABLE agents 
-ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}';
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}';
 
 -- Add updated_at if missing
-ALTER TABLE agents 
-ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
+ALTER TABLE agents ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
 
 -- Add unique constraint on name column if not exists
 DO $$
 BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM pg_constraint 
-        WHERE conname = 'agents_name_key' 
-        AND conrelid = 'agents'::regclass
+        WHERE conname = 'agents_name_key' AND conrelid = 'agents'::regclass
     ) THEN
         ALTER TABLE agents ADD CONSTRAINT agents_name_key UNIQUE (name);
-    END IF;
-END $$;
-
--- Set default UUID generation for id column if it's missing
-DO $$
-BEGIN
-    -- Check if id column exists and doesn't have a default
-    IF EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'agents' AND column_name = 'id'
-    ) THEN
-        -- Try to set default - may fail if already set, that's ok
-        BEGIN
-            ALTER TABLE agents ALTER COLUMN id SET DEFAULT uuid_generate_v4();
-        EXCEPTION WHEN OTHERS THEN
-            NULL; -- Ignore if already has default or other issue
-        END;
     END IF;
 END $$;
 
 -- Update display_name for existing agents (use name as fallback)
 UPDATE agents SET display_name = name WHERE display_name IS NULL;
 
--- Insert the 7 agents if they don't exist (with explicit UUIDs and roles)
-INSERT INTO agents (id, name, display_name, description, color, role) VALUES
-    (uuid_generate_v4(), 'Nexar', 'Nexar', 'Strategic coordinator', '#EF4444', 'Coordinator'),
-    (uuid_generate_v4(), 'Rio', 'Rio', 'Data analyst', '#3B82F6', 'Analyst'),
-    (uuid_generate_v4(), 'Orion', 'Orion', 'Research specialist', '#10B981', 'Researcher'),
-    (uuid_generate_v4(), 'Juno', 'Juno', 'Creative assistant', '#F59E0B', 'Creative'),
-    (uuid_generate_v4(), 'Cipher', 'Cipher', 'Security & encryption', '#8B5CF6', 'Developer'),
-    (uuid_generate_v4(), 'Phoenix', 'Phoenix', 'System architect', '#EC4899', 'Architect'),
-    (uuid_generate_v4(), 'Sterling', 'Sterling', 'Business logic', '#06B6D4', 'Advisor')
+-- Update department for existing agents (use 'General' as fallback)
+UPDATE agents SET department = 'General' WHERE department IS NULL;
+
+-- Update status for existing agents (use 'active' as fallback)
+UPDATE agents SET status = 'active' WHERE status IS NULL;
+
+-- Update archetype for existing agents (use role as fallback)
+UPDATE agents SET archetype = COALESCE(role, 'Assistant') WHERE archetype IS NULL;
+
+-- Insert the 7 agents if they don't exist (with ALL required fields)
+INSERT INTO agents (
+    id, name, display_name, description, color, role, department, 
+    status, archetype, is_active, collaboration_network
+) VALUES
+    (uuid_generate_v4(), 'Nexar', 'Nexar', 'Strategic coordinator', '#EF4444', 
+     'Coordinator', 'Operations', 'active', 'Strategist', true, '[]'),
+    (uuid_generate_v4(), 'Rio', 'Rio', 'Data analyst', '#3B82F6', 
+     'Analyst', 'Growth', 'active', 'Data-Driven', true, '[]'),
+    (uuid_generate_v4(), 'Orion', 'Orion', 'Research specialist', '#10B981', 
+     'Researcher', 'Product', 'active', 'Explorer', true, '[]'),
+    (uuid_generate_v4(), 'Juno', 'Juno', 'Creative assistant', '#F59E0B', 
+     'Creative', 'Operations', 'active', 'Organizer', true, '[]'),
+    (uuid_generate_v4(), 'Cipher', 'Cipher', 'Security & encryption', '#8B5CF6', 
+     'Developer', 'Engineering', 'active', 'Architect', true, '[]'),
+    (uuid_generate_v4(), 'Phoenix', 'Phoenix', 'System architect', '#EC4899', 
+     'Architect', 'Creative', 'active', 'Visionary', true, '[]'),
+    (uuid_generate_v4(), 'Sterling', 'Sterling', 'Business logic', '#06B6D4', 
+     'Advisor', 'Finance', 'active', 'Analyst', true, '[]')
 ON CONFLICT (name) DO UPDATE SET 
     display_name = EXCLUDED.display_name,
     description = EXCLUDED.description,
     color = EXCLUDED.color,
-    role = EXCLUDED.role;
+    role = EXCLUDED.role,
+    department = EXCLUDED.department,
+    status = EXCLUDED.status,
+    archetype = EXCLUDED.archetype,
+    is_active = EXCLUDED.is_active;
 
 -- ============================================
 -- STEP 2: CREATE CONVERSATIONS TABLE
@@ -212,8 +232,7 @@ ALTER TABLE token_usage_stats ENABLE ROW LEVEL SECURITY;
 -- Enable RLS on agents table (if not already)
 ALTER TABLE agents ENABLE ROW LEVEL SECURITY;
 
--- Create policies for service role access
--- First drop existing policies to avoid conflicts
+-- Drop existing policies to avoid conflicts
 DROP POLICY IF EXISTS "Allow all access to service role" ON agents;
 DROP POLICY IF EXISTS "Allow all access to service role" ON conversations;
 DROP POLICY IF EXISTS "Allow all access to service role" ON conversation_messages;
@@ -290,7 +309,8 @@ GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;
 -- VERIFICATION
 -- ============================================
 SELECT 'Migration complete!' as status;
-SELECT table_name, column_name 
+SELECT 'Agents table columns:' as info;
+SELECT column_name, data_type, is_nullable 
 FROM information_schema.columns 
 WHERE table_name = 'agents' 
 ORDER BY ordinal_position;
