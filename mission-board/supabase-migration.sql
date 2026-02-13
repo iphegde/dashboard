@@ -14,6 +14,10 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 ALTER TABLE agents 
 ADD COLUMN IF NOT EXISTS display_name VARCHAR(100);
 
+-- Add description if missing
+ALTER TABLE agents 
+ADD COLUMN IF NOT EXISTS description TEXT;
+
 -- Add color if missing  
 ALTER TABLE agents 
 ADD COLUMN IF NOT EXISTS color VARCHAR(7) DEFAULT '#3B82F6';
