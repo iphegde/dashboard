@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import Dashboard from './components/Dashboard';
-import Conversations from './components/Conversations';
-import Agents from './components/Agents';
+import Dashboard from './components/Dashboard.jsx';
+import Conversations from './components/Conversations.jsx';
+import Agents from './components/Agents.jsx';
 
 // Supabase configuration - Vite uses import.meta.env instead of process.env
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://yckghcjicjvqdfcrrknzs.supabase.co';
