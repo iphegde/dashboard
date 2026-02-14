@@ -4,9 +4,9 @@ import Dashboard from './components/Dashboard';
 import Conversations from './components/Conversations';
 import Agents from './components/Agents';
 
-// Supabase configuration
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || 'https://yckghcjicjvqdfcrrknzs.supabase.co';
-const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlja2doY2ppY2p2cWRmY3Jya256cyIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzAwMDAwMDAwLCJleHAiOjE3MzE1MzYwMDB9.placeholder';
+// Supabase configuration - Vite uses import.meta.env instead of process.env
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://yckghcjicjvqdfcrrknzs.supabase.co';
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlja2doY2ppY2p2cWRmY3Jya256cyIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzAwMDAwMDAwLCJleHAiOjE3MzE1MzYwMDB9.placeholder';
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
