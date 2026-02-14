@@ -199,6 +199,37 @@ app.get('/api/stats/agents', async (req, res) => {
   }
 });
 
+// Delete conversations by date range
+app.delete('/api/conversations/delete-range', async (req, res) => {
+  try {
+    const { from, to } = req.query;
+    
+    if (!from || !to) {
+      return res.status(400).json({ error: 'Both from and to dates are required' });
+    }
+
+    // Delete conversations within date range
+    // Messages will be cascade deleted due to ON DELETE CASCADE
+    const { data, error, count } = await supabase
+      .from('conversations')
+      .delete()
+      .gte('created_at', from)
+      .lte('created_at', to)
+      .select('count');
+
+    if (error) throw error;
+
+    res.json({ 
+      success: true, 
+      deletedCount: data?.length || 0,
+      message: `Deleted ${data?.length || 0} conversation(s)`
+    });
+  } catch (err) {
+    console.error('Error deleting conversations:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Real-time subscription endpoint (WebSocket)
 const WebSocket = require('ws');
 const http = require('http');

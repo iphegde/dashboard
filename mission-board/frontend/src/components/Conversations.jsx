@@ -112,19 +112,24 @@ function Conversations({ supabase, agents }) {
       const fromTimestamp = new Date(fromDate).toISOString();
       const toTimestamp = new Date(toDate).toISOString();
 
-      const { error } = await supabase
-        .from('conversations')
-        .delete()
-        .gte('created_at', fromTimestamp)
-        .lte('created_at', toTimestamp);
+      // Call backend API to delete (frontend only has read-only anon key)
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL || 'http://76.13.148.180:3001'}/api/conversations/delete-range?from=${encodeURIComponent(fromTimestamp)}&to=${encodeURIComponent(toTimestamp)}`,
+        { method: 'DELETE' }
+      );
 
-      if (error) throw error;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete');
+      }
 
-      showToast(`Successfully deleted ${filteredConversations.length} conversation(s)`, 'success');
+      const result = await response.json();
+      showToast(`Successfully deleted ${result.deletedCount} conversation(s)`, 'success');
       handleClearFilters();
       setSelectedConv(null);
       await fetchConversations();
     } catch (err) {
+      console.error('Delete error:', err);
       showToast(`Error deleting conversations: ${err.message}`, 'error');
     } finally {
       setIsDeleting(false);
