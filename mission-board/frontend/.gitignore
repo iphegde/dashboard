@@ -4,6 +4,9 @@ node_modules
 .pnp.js
 package-lock.json
 
+# Shared module (not ignored - needed for agents)
+# /shared is intentionally NOT ignored
+
 # Production build
 dist
 dist-ssr

@@ -1,0 +1,13 @@
+{
+  "name": "mission-board-shared",
+  "version": "1.0.0",
+  "description": "Shared utilities for Mission Board - conversation logger for agents",
+  "type": "module",
+  "main": "logger.js",
+  "exports": {
+    ".": "./logger.js"
+  },
+  "scripts": {
+    "test": "node test-logger.js"
+  }
+}
