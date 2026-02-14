@@ -1,0 +1,19 @@
+{
+  "name": "mission-board-logger",
+  "version": "1.0.0",
+  "description": "Log agent conversations to Mission Board dashboard",
+  "type": "module",
+  "main": "logger.js",
+  "exports": {
+    ".": "./logger.js"
+  },
+  "keywords": [
+    "openclaw",
+    "agent",
+    "logging",
+    "dashboard",
+    "supabase"
+  ],
+  "author": "Nexar",
+  "license": "MIT"
+}
